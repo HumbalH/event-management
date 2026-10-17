@@ -1,7 +1,87 @@
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+
 function Register() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
+
+  const navigate = useNavigate();
+
+  function handleRegister(e) {
+    e.preventDefault();
+
+    if (!name.trim() || !email.trim() || !password) {
+      setMessage('Please fill all fields');
+      return;
+    }
+
+    if (password.length < 8) {
+      setMessage('Password must be at least 8 characters.');
+      return;
+    }
+
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+
+    const existingUser = users.find(
+      (user) => user.email === email.trim().toLowerCase()
+    );
+
+    if (existingUser) {
+      setMessage('An account with this email already exists.');
+      return;
+    }
+
+    const newUser = {
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
+      password: password
+    };
+
+    users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(users));
+
+    navigate('/login');
+  }
+
   return (
     <div>
-      <h1>Register Page</h1>
+      <h1>Create Account</h1>
+
+      <form onSubmit={handleRegister}>
+        <div>
+          <label>Name: </label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label>Email: </label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label>Password: </label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+
+        <button type="submit">Register</button>
+      </form>
+
+      <p>{message}</p>
+      <p>Already have an account? <Link to="/login">Login</Link></p>
     </div>
   );
 }
