@@ -43,6 +43,7 @@ if(user){
 
 <button type="submit">Login</button>
       </form>
+      <p>{message}</p>
 {loggedInUser && <p>Welcome, {loggedInUser.name}</p>} 
    </div>
   );
