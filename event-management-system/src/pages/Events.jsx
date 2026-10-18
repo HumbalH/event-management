@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import './Events.css';
+import { Link } from 'react-router-dom';
 
 function Events() {
 
@@ -93,13 +94,13 @@ const url = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${apiK
             {!loading && !error && (
                 <div className="events-container">
                     {events.map(event => (
-                        <div key={event.id} className="event-card">
+                        <Link to={`/events/${event.id}`} key={event.id} className="event-card">
                             <img src={event.images[0].url} width="300" />
                             <h3>{event.name}</h3>
                             <p>Date: {event.dates.start.localDate}</p>
                             <p>Time: {event.dates.start.localTime}</p>
                             <p>Venue: {event._embedded?.venues?.[0]?.name}</p>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             )}
