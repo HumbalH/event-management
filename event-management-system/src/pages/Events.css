@@ -9,6 +9,10 @@
     flex: 1 1 250px;
     border: 1px solid white(95, 85, 85);
     padding: 15px;
-    background-color:rgb(120, 119, 119);
+    background-color:rgb(15, 12, 12);
     color: black;
+}
+
+*{
+    color: white;
 }

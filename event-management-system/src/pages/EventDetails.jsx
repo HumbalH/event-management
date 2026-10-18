@@ -68,7 +68,7 @@ function handleRegister() {
     return (
         <div>
 
-            <h1>{event.name}</h1>
+            <h2>{event.name}</h2>
 
             {event.images?.[0]?.url && (
                 <img src={event.images[0].url} width="400" />

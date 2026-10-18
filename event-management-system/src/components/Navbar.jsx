@@ -15,11 +15,11 @@ localStorage.removeItem('currentUser');
 }
     return(
 <div>
-<nav>
-<Link to="/">Home</Link>
+<nav style={{ display: 'flex', gap: '20px' }}><Link to="/">Home</Link>
 <Link to="/myevents">My Events</Link>
-{currentUser ? <button onClick={handleLogout}>Logout</button> : <Link to="/login">Login</Link>}
+{!currentUser && <Link to="/login">Login</Link>}
 {!currentUser ? <Link to="/register">Register</Link> : null}
+{currentUser && <button onClick={handleLogout} style={{marginLeft: 'auto'  }}>Logout</button>}
 
 
 

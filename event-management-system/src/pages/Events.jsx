@@ -10,13 +10,15 @@ function Events() {
     const [category, setCategory] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [upcomingOnly, setUpcomingOnly] = useState(true);
 
     useEffect(() => {
         const apiKey = import.meta.env.VITE_TICKETMASTER_API_KEY;
         const today = new Date().toISOString().split('T')[0];
+        const dateFilter = upcomingOnly ? `&startDateTime=${today}T00:00:00Z` : '';
 
-const url = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${apiKey}&size=20&keyword=${encodeURIComponent(search)}&classificationName=${encodeURIComponent(category)}&startDateTime=${today}T00:00:00Z&sort=date,asc`;
-        setLoading(true);
+const url = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${apiKey}&size=20&keyword=${encodeURIComponent(search)}&classificationName=${encodeURIComponent(category)}${dateFilter}&sort=date,asc`;
+setLoading(true);
         setError('');
 
         fetch(url)
@@ -36,15 +38,17 @@ const url = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${apiK
                 setLoading(false);
             });
 
-    }, [category]);
+    }, [category, upcomingOnly]);
 
     function handleSearch(e) {
 
         e.preventDefault();
         const apiKey = import.meta.env.VITE_TICKETMASTER_API_KEY;
         const today = new Date().toISOString().split('T')[0];
-const url = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${apiKey}&size=20&keyword=${encodeURIComponent(search)}&classificationName=${encodeURIComponent(category)}&startDateTime=${today}T00:00:00Z&sort=date,asc`;
-        setLoading(true);
+        const dateFilter = upcomingOnly ? `&startDateTime=${today}T00:00:00Z` : '';
+
+const url = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${apiKey}&size=20&keyword=${encodeURIComponent(search)}&classificationName=${encodeURIComponent(category)}${dateFilter}&sort=date,asc`;
+setLoading(true);
         setError('');
 
         fetch(url)
@@ -83,6 +87,18 @@ const url = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${apiK
             <button onClick={() => setCategory('Music')}>Music</button>
             <button onClick={() => setCategory('Sports')}>Sports</button>
             <button onClick={() => setCategory('Arts & Theatre')}>Arts</button>
+<button onClick={() => setCategory('Family')}>Family</button>
+<button onClick={() => setCategory('Film')}>Film</button>
+
+<label>
+    <input
+        type="checkbox"
+        checked={upcomingOnly}
+        onChange={(e) => setUpcomingOnly(e.target.checked)}
+    />
+    Upcoming Only
+</label>
+
 
             {loading && <p>Loading events...</p>}
             {error && <p>{error}</p>}
